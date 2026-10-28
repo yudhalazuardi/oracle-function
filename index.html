@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Function SQL Oracle (Skema HR) – Pemrograman Database</title>
+<style>
+:root{--bg:#f4f6fb;--c:#fff;--t:#1d2433;--m:#5b6477;--p:#c74634;--b:#e1e5ee;--ok:#1a7f4b;--bad:#c62828;--sub:#fdf1ef}
+@media(prefers-color-scheme:dark){:root{--bg:#10131a;--c:#1a1f2b;--t:#e8ebf2;--m:#9aa3b5;--b:#2b3243;--p:#ff7a66;--ok:#4cd08a;--bad:#ff8080;--sub:#2a1f22}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--t)}
+header{background:linear-gradient(120deg,#8f2d1f,#c74634);color:#fff;padding:18px 16px 0;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:18px}header p{margin:2px 0 10px;font-size:12px;opacity:.85}
+nav{display:flex;gap:4px;overflow-x:auto}nav button{border:0;background:rgba(255,255,255,.15);color:#fff;padding:9px 14px;border-radius:8px 8px 0 0;font:600 14px inherit;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--bg);color:var(--p)}
+main{max-width:920px;margin:0 auto;padding:16px}.hide{display:none}
+h2{margin:28px 0 8px;font-size:20px;border-left:5px solid var(--p);padding-left:10px}h3{margin:18px 0 4px;font-size:16px;color:var(--p)}
+section,.card,.pg{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:6px 18px 16px;margin-bottom:14px}.card{padding:16px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid var(--b);padding:5px 8px;text-align:left}th{background:var(--sub)}
+.sc{overflow-x:auto;margin:6px 0}
+pre{background:#0f172a;color:#e2e8f0;padding:10px 12px;border-radius:8px;overflow-x:auto;font:13px/1.5 ui-monospace,Consolas,monospace;margin:8px 0;white-space:pre-wrap}
+#teori pre{cursor:pointer}#teori pre:hover{outline:2px solid var(--p)}
+code{background:var(--sub);padding:1px 5px;border-radius:4px;font-size:13px}
+.box{background:var(--sub);border-left:4px solid var(--p);padding:8px 12px;border-radius:6px;margin:10px 0}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}.toc a,.chip{padding:5px 11px;border:1px solid var(--b);border-radius:20px;text-decoration:none;color:var(--t);background:var(--c);font:600 13px inherit;cursor:pointer}
+.chip.on{background:var(--p);color:#fff;border-color:var(--p)}.chip.ok{border-color:var(--ok);color:var(--ok)}.chip.bad{border-color:var(--bad);color:var(--bad)}.chip.on.ok,.chip.on.bad{color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.score{font-size:13px;color:var(--m);margin-bottom:8px}
+.tag{background:var(--p);color:#fff;font-size:12px;font-weight:700;padding:2px 9px;border-radius:12px}
+textarea{width:100%;background:#0f172a;color:#e2e8f0;border:2px solid var(--b);border-radius:8px;padding:10px;font:13px ui-monospace,Consolas,monospace;resize:vertical}
+textarea:focus{outline:0;border-color:var(--p)}
+button.pri{background:var(--p);color:#fff;border:0;padding:9px 16px;border-radius:8px;font:700 14px inherit;cursor:pointer;margin:8px 6px 8px 0}
+button.sec{background:var(--c);color:var(--p);border:1px solid var(--p);padding:6px 12px;border-radius:8px;font:600 13px inherit;cursor:pointer}
+canvas{width:100%;height:auto;border-radius:10px;display:block;margin:6px 0}
+.msg{padding:8px 12px;border-radius:8px;font-weight:600;margin:8px 0}.msg.ok{background:rgba(26,127,75,.14);color:var(--ok)}.msg.bad{background:rgba(198,40,40,.12);color:var(--bad)}
+.key{border:1px dashed var(--ok);border-radius:8px;padding:8px 12px;margin-top:10px}
+label{display:block;margin:10px 0;font-weight:600;font-size:13px}input{width:100%;padding:9px;margin-top:3px;border:2px solid var(--b);border-radius:8px;background:var(--c);color:var(--t);font-size:14px}summary{cursor:pointer}details.card{margin-bottom:8px}footer b{display:block;color:var(--t);font-size:13px;margin-bottom:6px}footer{text-align:center;color:var(--m);font-size:12px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+<h1>Function pada SQL Oracle — Skema HR</h1>
+<p>Pemrograman Database · Single-Row &amp; Multiple-Row Function</p>
+<nav><button data-t="teori" class="on">📘 Teori</button><button data-t="uji">✍️ Uji Query</button><button data-t="prak">🧪 Praktikum Canvas</button><button data-t="kunci">🔑 Login</button></nav>
+</header>
+<main>
+
+<div id="teori">
+<div class="toc"><a href="#s1">1 Pengantar</a><a href="#s2">2 Single-Row</a><a href="#s3">3 Multiple-Row</a><a href="#s4">4 Character</a><a href="#s5">5 Number</a><a href="#s6">6 Date</a><a href="#s7">7 Agregat</a><a href="#s8">8 GROUP BY/HAVING</a><a href="#s9">9 Ringkasan</a><a href="#pg">🔧 Playground</a></div>
+
+<section id="s1"><h2>1. Pengantar Function dalam SQL Oracle</h2>
+<p><b>Function</b> adalah bagian dari SQL expression yang dipakai untuk mengolah data berupa teks, angka, tanggal, maupun hasil perhitungan lain. Berdasarkan <b>jumlah baris yang diproses</b>, function dibagi dua:</p>
+<div class="sc"><table><tr><th></th><th>Single-Row Function</th><th>Multiple-Row (Aggregate) Function</th></tr>
+<tr><td>Input</td><td>Satu baris</td><td>Sekelompok baris</td></tr>
+<tr><td>Output</td><td>Satu nilai <i>per baris</i></td><td>Satu nilai <i>per kelompok/seluruh tabel</i></td></tr>
+<tr><td>Contoh</td><td>UPPER, LPAD, ROUND, ADD_MONTHS</td><td>COUNT, AVG, SUM, MAX, MIN</td></tr>
+<tr><td>Dipakai di</td><td>SELECT, WHERE, ORDER BY</td><td>SELECT, HAVING, ORDER BY</td></tr></table></div>
+<p>Skema <b>HR</b> yang dipakai: tabel <code>EMPLOYEES</code> (employee_id, first_name, last_name, email, hire_date, job_id, salary, commission_pct, manager_id, department_id). <i>Klik blok kode mana pun untuk mencobanya di Playground di bagian bawah.</i></p></section>
+
+<section id="s2"><h2>2. Single-Row Function</h2>
+<p><b>Definisi:</b> fungsi yang menerima <b>satu baris</b> sebagai input dan menghasilkan <b>satu nilai output untuk setiap baris</b>. Jika ada 10 karyawan, Oracle mengolahnya satu per satu, menghasilkan 10 output.</p>
+<div class="box"><b>Analogi:</b> barista di coffee shop. Pelanggan A minta cappuccino extra milk, B americano tanpa gula, C latte art. Barista memproses tiap pesanan satu per satu sesuai permintaannya — begitu juga tiap baris data diproses sesuai "resep" function-nya.</div>
+<p><b>Kategori yang dipelajari:</b></p><ul><li><b>Character:</b> UPPER, LOWER, LPAD, RPAD, REPLACE</li><li><b>Number:</b> ROUND, TRUNC, MOD</li><li><b>Date:</b> SYSDATE, DATE ± NUMBER, ADD_MONTHS, MONTHS_BETWEEN</li></ul></section>
+
+<section id="s3"><h2>3. Multiple-Row (Aggregate) Function</h2>
+<p><b>Definisi:</b> fungsi yang memproses <b>banyak baris sekaligus</b> lalu mengembalikan <b>satu nilai ringkasan</b> (untuk seluruh tabel atau tiap kelompok bila memakai GROUP BY).</p>
+<div class="box"><b>Analogi:</b> tiga teman ke café: kopi 25rb, latte 30rb, matcha 35rb. Saat bayar, Dika bilang "total 90 ribu, rata-rata 30 ribu per orang". Tak peduli siapa memesan apa — yang penting satu angka rangkuman.</div>
+<p><b>Catatan penting:</b> semua fungsi agregat <b>mengabaikan NULL</b>, kecuali <code>COUNT(*)</code>.</p></section>
+
+<section id="s4"><h2>4. Character-Manipulation Functions</h2>
+<h3>UPPER &amp; LOWER</h3>
+<p>Syntax: <code>UPPER(teks)</code>, <code>LOWER(teks)</code>. Mengubah huruf menjadi kapital / kecil. Berguna untuk menstandarkan penulisan, pencarian tanpa peduli besar-kecil huruf, dan laporan yang konsisten.</p>
+<pre>SELECT UPPER(first_name || ' ' || last_name) "NAMA UNTUK ID CARD"
+FROM employees;</pre>
+<p>Hasil contoh: <code>STEVEN KING</code>. Operator <code>||</code> menggabungkan (concatenate) teks.</p>
+<pre>SELECT LOWER(first_name || '.' || last_name) || '@technova.com' "Email Perusahaan"
+FROM employees;</pre>
+<p>Hasil contoh: <code>steven.king@technova.com</code></p>
+<h3>LPAD &amp; RPAD</h3>
+<p>Syntax: <code>LPAD(teks, panjang, karakter_pengisi)</code> — menambah karakter di sisi <b>kiri</b> sampai panjang total tercapai. <code>RPAD</code> menambah di sisi <b>kanan</b>. Jika teks lebih panjang dari <i>panjang</i>, teks dipotong.</p>
+<pre>SELECT last_name, salary, LPAD(salary,10,'*') FROM employees;</pre>
+<p><code>1000 → ******1000</code> (kiri) &nbsp;|&nbsp; RPAD: <code>1000 → 1000******</code> (kanan)</p>
+<p><b>Kasus:</b> laporan karyawan bergaji di bawah 4.000 USD dengan simbol mata uang rata kiri:</p>
+<pre>SELECT last_name, LPAD(salary,6,'$ ') "Gaji Dolar",
+       LPAD(salary*15000,11,'Rp.') "Gaji Rupiah"
+FROM employees WHERE salary &lt; 4000;</pre>
+<h3>REPLACE</h3>
+<p>Syntax: <code>REPLACE(teks, yang_dicari, pengganti)</code>. Dipakai saat istilah/kode berubah, memperbaiki teks salah secara massal, atau mengubah <i>tampilan</i> tanpa mengubah isi tabel secara permanen.</p>
+<pre>SELECT job_id "Kode Lama", REPLACE(job_id,'CLERK','STAFF') "Kode Baru"
+FROM employees;</pre>
+<p>Hasil contoh: <code>SH_CLERK → SH_STAFF</code>, <code>ST_CLERK → ST_STAFF</code>.</p></section>
+
+<section id="s5"><h2>5. Number Functions</h2>
+<div class="sc"><table><tr><th>Function</th><th>Syntax</th><th>Fungsi</th><th>Contoh</th></tr>
+<tr><td>ROUND</td><td>ROUND(n, d)</td><td>Pembulatan ke d desimal</td><td>ROUND(2900/30,2) = 96.67</td></tr>
+<tr><td>TRUNC</td><td>TRUNC(n, d)</td><td>Pemotongan desimal tanpa pembulatan</td><td>TRUNC(2900/30,2) = 96.66</td></tr>
+<tr><td>MOD</td><td>MOD(m, n)</td><td>Sisa hasil bagi m / n</td><td>MOD(2900,3) = 2</td></tr></table></div>
+<p>Nilai d negatif bekerja pada digit sebelum koma: <code>ROUND(1234,-2) = 1200</code>.</p>
+<pre>SELECT last_name "Nama Karyawan", salary "Gaji per bulan",
+       salary/30 "Gaji Perhari", ROUND(salary/30,2) "Gaji Perhari (dibulatkan)"
+FROM employees;</pre>
+<pre>SELECT last_name, salary, salary/30, ROUND(salary/30,2), TRUNC(salary/30,2)
+FROM employees;</pre>
+<pre>SELECT last_name, salary, MOD(salary,3) FROM employees;</pre></section>
+
+<section id="s6"><h2>6. Date Functions</h2>
+<p>Mengelola dan menghitung data bertipe <code>DATE</code>: menampilkan tanggal sekarang, menghitung masa kerja, menentukan jatuh tempo, atau memprediksi evaluasi/kenaikan gaji.</p>
+<h3>SYSDATE</h3><p>Tanggal &amp; waktu sistem database saat ini. <code>DUAL</code> adalah tabel dummy satu baris.</p>
+<pre>SELECT SYSDATE FROM dual;</pre>
+<pre>SELECT first_name || ' ' || last_name "Nama Karyawan", SYSDATE "Tanggal Laporan"
+FROM employees;</pre>
+<h3>DATE + NUMBER</h3><p>Menambah/mengurangi <b>hari</b>. Selisih dua tanggal (<code>tgl1 - tgl2</code>) menghasilkan jumlah hari.</p>
+<pre>SELECT first_name || ' ' || last_name "Nama", hire_date "Tanggal Masuk",
+       hire_date + 90 "Tanggal Kontrak Berakhir"
+FROM employees;</pre>
+<p>Contoh: <code>17-JUN-87 + 90 = 15-SEP-87</code></p>
+<h3>ADD_MONTHS</h3><p>Syntax: <code>ADD_MONTHS(tanggal, n)</code> — tambah/kurangi n <b>bulan</b>. Contoh: <code>ADD_MONTHS('17-JUN-87',6) = 17-DEC-87</code>. Evaluasi 6 bulanan:</p>
+<pre>SELECT first_name || ' ' || last_name "Nama", hire_date "Tanggal Masuk",
+       ADD_MONTHS(hire_date, 6) "Tanggal Evaluasi Berikutnya"
+FROM employees;</pre>
+<p>10 tahun = 120 bulan: <code>ADD_MONTHS(hire_date,120)</code>.</p>
+<h3>MONTHS_BETWEEN</h3><p>Syntax: <code>MONTHS_BETWEEN(tgl_akhir, tgl_awal)</code> — selisih bulan berupa angka desimal; biasanya dibungkus ROUND.</p>
+<pre>SELECT first_name || ' ' || last_name "Nama", hire_date "Tanggal Masuk",
+       SYSDATE "Hari Ini",
+       ROUND(MONTHS_BETWEEN(SYSDATE, hire_date), 0) "Lama Kerja (Bulan)"
+FROM employees;</pre>
+<p>Literal tanggal ditulis dengan format <code>'DD-MON-YY'</code>, mis. <code>'14-JAN-99'</code>.</p></section>
+
+<section id="s7"><h2>7. Aggregate Functions</h2>
+<div class="sc"><table><tr><th>Function</th><th>Fungsi</th><th>Catatan</th></tr>
+<tr><td>COUNT</td><td>Banyaknya data</td><td>COUNT(*) menghitung semua baris; COUNT(kolom) hanya yang tidak NULL</td></tr>
+<tr><td>AVG</td><td>Rata-rata (mirip AVERAGE di Excel)</td><td>NULL diabaikan</td></tr>
+<tr><td>SUM</td><td>Jumlah total</td><td>Hanya untuk angka</td></tr>
+<tr><td>MAX / MIN</td><td>Nilai tertinggi / terendah</td><td>Berlaku juga untuk teks &amp; tanggal</td></tr></table></div>
+<pre>SELECT COUNT(*) FROM employees;
+SELECT COUNT(department_id) FROM employees;
+SELECT COUNT(*) FROM employees WHERE salary &gt; 5000;</pre>
+<pre>SELECT AVG(salary) "Rata-rata Gaji" FROM employees;</pre>
+<pre>SELECT SUM(salary), MIN(salary), MAX(salary)
+FROM employees WHERE department_id = 20;</pre></section>
+
+<section id="s8"><h2>8. Pengelompokan: GROUP BY, HAVING, ORDER BY</h2>
+<p><code>GROUP BY</code> membagi baris menjadi kelompok; fungsi agregat dihitung <b>per kelompok</b>. <code>HAVING</code> menyaring <b>kelompok</b> (bukan baris). <code>ORDER BY</code> mengurutkan hasil (<code>DESC</code> = menurun).</p>
+<pre>SELECT department_id, AVG(salary) "rata-rata gaji"
+FROM employees GROUP BY department_id;</pre>
+<pre>SELECT department_id, MAX(salary)
+FROM employees
+GROUP BY department_id
+HAVING MAX(salary) &gt; 6000
+ORDER BY MAX(salary) DESC;</pre>
+<div class="sc"><table><tr><th>WHERE</th><th>HAVING</th></tr><tr><td>Menyaring <b>baris</b> sebelum pengelompokan</td><td>Menyaring <b>kelompok</b> setelah pengelompokan</td></tr><tr><td>Tidak boleh memuat fungsi agregat (ORA-00934)</td><td>Boleh memuat fungsi agregat</td></tr></table></div>
+<p><b>Urutan eksekusi logis:</b> FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY.</p>
+<div class="box"><b>Aturan emas:</b> setiap kolom di SELECT yang <i>bukan</i> fungsi agregat wajib ada di GROUP BY, jika tidak muncul error <code>ORA-00979: not a GROUP BY expression</code>.</div></section>
+
+<section id="s9"><h2>9. Ringkasan &amp; Kesalahan Umum</h2>
+<ul><li>Single-row → output sebanyak baris input; multiple-row → satu nilai per kelompok.</li>
+<li>Teks harus diapit tanda kutip tunggal <code>'...'</code>; alias dengan kutip ganda <code>"..."</code>.</li>
+<li>LPAD/RPAD memotong teks bila lebih panjang dari panjang yang diminta.</li>
+<li>ROUND membulatkan, TRUNC memotong — hasil bisa berbeda di digit terakhir.</li>
+<li><code>COUNT(kolom)</code> ≠ <code>COUNT(*)</code> bila kolom mengandung NULL.</li>
+<li>Jangan memakai agregat di WHERE; pakai HAVING.</li></ul></section>
+
+<div class="pg" id="pg"><h2>🔧 Playground</h2><p style="margin:0 0 6px;color:var(--m);font-size:13px">Klik blok kode di atas atau tulis query sendiri (tabel: EMPLOYEES, DUAL).</p>
+<textarea rows="4" spellcheck="false">SELECT UPPER(first_name || ' ' || last_name), salary FROM employees WHERE department_id = 60</textarea>
+<button class="pri">▶ Jalankan</button><div class="out"></div></div>
+</div>
+
+<div id="uji" class="hide"><div class="score"></div></div>
+<div id="prak" class="hide"><div class="score"></div></div>
+<div id="kunci" class="hide"></div>
+</main>
+<footer><b>Aplikasi oleh dosen pengampu Lazuardi Yudha Pradana, S.Kom., M.Kom.</b>Simulator memakai 24 baris data tabel EMPLOYEES (skema HR klasik) dan mesin SQL mini di browser — bukan Oracle sungguhan. Mendukung SELECT, DISTINCT, WHERE (AND/OR/NOT/LIKE/IS NULL), GROUP BY, HAVING, ORDER BY.</footer>
+
+<script>
+const MN=d=>String(d.getUTCDate()).padStart(2,'0')+'-'+['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getUTCMonth()]+'-'+String(d.getUTCFullYear()%100).padStart(2,'0');
+class Dt{constructor(d){this.d=d}[Symbol.toPrimitive](h){return h=='number'?this.d/864e5:MN(this.d)}}
+const PD=s=>{const m=s.match(/^(\d+)-([a-z]{3})-(\d+)$/i),mo='JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC'.split(' ').indexOf(m[2].toUpperCase());let y=+m[3];if(m[3].length<=2)y+=y<50?2000:1900;return new Dt(new Date(Date.UTC(y,mo,+m[1])))};
+const DT=(x,n)=>new Dt(new Date(x.d.getTime()+n*864e5));
+const COLS=['employee_id','first_name','last_name','email','hire_date','job_id','salary','commission_pct','manager_id','department_id'],IDS=[...COLS,'dummy'];
+const DATA=`100,Steven,King,SKING,17-JUN-87,AD_PRES,24000,,,90;101,Neena,Kochhar,NKOCHHAR,21-SEP-89,AD_VP,17000,,100,90;102,Lex,De Haan,LDEHAAN,13-JAN-93,AD_VP,17000,,100,90;103,Alexander,Hunold,AHUNOLD,03-JAN-90,IT_PROG,9000,,102,60;104,Bruce,Ernst,BERNST,21-MAY-91,IT_PROG,6000,,103,60;105,David,Austin,DAUSTIN,25-JUN-97,IT_PROG,4800,,103,60;106,Valli,Pataballa,VPATABAL,05-FEB-98,IT_PROG,4800,,103,60;107,Diana,Lorentz,DLORENTZ,07-FEB-99,IT_PROG,4200,,103,60;108,Nancy,Greenberg,NGREENBE,17-AUG-94,FI_MGR,12008,,101,100;109,Daniel,Faviet,DFAVIET,16-AUG-94,FI_ACCOUNT,9000,,108,100;110,John,Chen,JCHEN,28-SEP-97,FI_ACCOUNT,8200,,108,100;114,Den,Raphaely,DRAPHEAL,07-DEC-94,PU_MAN,11000,,100,30;115,Alexander,Khoo,AKHOO,18-MAY-95,PU_CLERK,3100,,114,30;116,Shelli,Baida,SBAIDA,24-DEC-97,PU_CLERK,2900,,114,30;120,Matthew,Weiss,MWEISS,18-JUL-96,ST_MAN,8000,,100,50;124,Kevin,Mourgos,KMOURGOS,16-NOV-99,ST_MAN,5800,,100,50;141,Trenna,Rajs,TRAJS,17-OCT-95,ST_CLERK,3500,,124,50;184,Nandita,Sarchand,NSARCHAN,27-JAN-96,SH_CLERK,4200,,121,50;200,Jennifer,Whalen,JWHALEN,17-SEP-87,AD_ASST,4400,,101,10;201,Michael,Hartstein,MHARTSTE,17-FEB-96,MK_MAN,13000,,100,20;202,Pat,Fay,PFAY,17-AUG-97,MK_REP,6000,,201,20;145,John,Russell,JRUSSEL,01-OCT-96,SA_MAN,14000,.4,100,80;150,Peter,Tucker,PTUCKER,30-JAN-97,SA_REP,10000,.3,145,80;178,Kimberly,Grant,KGRANT,24-MAY-99,SA_REP,7000,.15,149,`.split(';').map((l,i)=>{const f=l.split(','),n=x=>x===''?null:+x;return{_i:i,employee_id:+f[0],first_name:f[1],last_name:f[2],email:f[3],hire_date:PD(f[4]),job_id:f[5],salary:+f[6],commission_pct:n(f[7]),manager_id:n(f[8]),department_id:n(f[9])}});
+String.prototype.LK=function(p){return new RegExp('^'+String(p).replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/%/g,'.*').replace(/_/g,'.')+'$','s').test(this)};
+const F={upper:s=>s==null?null:String(s).toUpperCase(),lower:s=>s==null?null:String(s).toLowerCase(),
+lpad:(s,n,p=' ')=>{s=String(s);return s.length>=n?s.slice(0,n):p.repeat(Math.ceil((n-s.length)/p.length)).slice(0,n-s.length)+s},
+rpad:(s,n,p=' ')=>{s=String(s);return s.length>=n?s.slice(0,n):s+p.repeat(Math.ceil((n-s.length)/p.length)).slice(0,n-s.length)},
+replace:(s,a,b='')=>String(s).split(a).join(b),
+round:(x,d=0)=>{const m=10**d;return Math.sign(x)*Math.round(Math.abs(x)*m)/m},trunc:(x,d=0)=>{const m=10**d;return Math.trunc(x*m)/m},
+mod:(a,b)=>b==0?a:a%b,sysdate:()=>new Dt(new Date()),
+add_months:(d,n)=>{const x=d.d,t=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+n,1)),dm=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate();t.setUTCDate(Math.min(x.getUTCDate(),dm));return new Dt(t)},
+months_between:(a,b)=>(a.d.getUTCFullYear()-b.d.getUTCFullYear())*12+a.d.getUTCMonth()-b.d.getUTCMonth()+(a.d.getUTCDate()-b.d.getUTCDate())/31};
+const vals=(G,f)=>G.map(f).filter(x=>x!=null);
+const A={count:(G,f)=>vals(G,f).length,sum:(G,f)=>{const v=vals(G,f);return v.length?v.reduce((a,b)=>a+ +b,0):null},avg:(G,f)=>{const v=vals(G,f);return v.length?v.reduce((a,b)=>a+ +b,0)/v.length:null},
+max:(G,f)=>{const v=vals(G,f);return v.length?v.reduce((a,b)=>b>a?b:a):null},min:(G,f)=>{const v=vals(G,f);return v.length?v.reduce((a,b)=>b<a?b:a):null}};
+const AG=new Set(Object.keys(A));
+const fmt=v=>v==null?'(null)':v instanceof Dt?String(v):typeof v=='number'?String(+v.toPrecision(12)):String(v);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function tok(s){s=s.replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[;\s]+$/,'');const re=/\s*(?:('(?:[^']|'')*')|("[^"]*")|(\d*\.?\d+)|([A-Za-z_][\w$]*)|(\|\||<>|!=|<=|>=|[-+*\/(),=<>%]))/y,t=[];let i=0,m;
+while(i<s.length){re.lastIndex=i;m=re.exec(s);if(!m){if(!s.slice(i).trim())break;throw Error('Karakter/teks tidak dikenali dekat: '+s.slice(i,i+10))}i=re.lastIndex;
+t.push(m[1]?{k:'s',v:m[1]}:m[2]?{k:'q',v:m[2]}:m[3]?{k:'n',v:m[3]}:m[4]?{k:'i',v:m[4].toLowerCase(),raw:m[4]}:{k:'o',v:m[5]})}return t}
+function tr(T){let o='',st=[];for(let i=0;i<T.length;i++){const t=T[i],n=T[i+1],v=t.v;
+if(t.k=='s'){const x=v.slice(1,-1).replace(/''/g,"'");o+=/^\d{1,2}-[a-z]{3}-\d{2,4}$/i.test(x)?`PD(${JSON.stringify(x)})`:JSON.stringify(x)}
+else if(t.k=='q')throw Error('Teks '+v+' memakai kutip ganda; gunakan kutip tunggal untuk nilai teks (kutip ganda hanya untuk alias)');
+else if(t.k=='n')o+=v;
+else if(t.k=='i'){
+if(n&&n.v=='('){if(AG.has(v)){o+=`A.${v}(G,r=>(`;st.push(1);i++;if(T[i+1]&&T[i+1].v=='*'){o+='1';i++}}else if(F[v]){o+=`F.${v}(`;st.push(0);i++}else throw Error('Fungsi tidak dikenal: '+t.raw)}
+else if(v=='and'||v=='or'||v=='not')o+={and:'&&',or:'||',not:'!'}[v];
+else if(v=='like'){o+=`.LK(${tr([T[++i]])})`}
+else if(v=='is'){const ng=n&&n.v=='not';i+=ng?2:1;if(!(T[i]&&T[i].v=='null'))throw Error('Sintaks IS NULL / IS NOT NULL tidak valid');o+=ng?'!=null':'==null'}
+else if(v=='sysdate'||v=='hire_date'){const ref=v=='sysdate'?'F.sysdate()':'r.hire_date';if(n&&(n.v=='+'||n.v=='-')&&T[i+2]&&T[i+2].k=='n'){o+=`DT(${ref},${n.v}${T[i+2].v})`;i+=2}else o+=ref}
+else if(IDS.includes(v))o+='r.'+v;
+else throw Error('Kolom/nama tidak dikenal: '+t.raw)}
+else{if(v=='(')st.push(0),o+='(';else if(v==')')o+=st.pop()?'))':')';else o+=v=='='?'==':v=='<>'?'!=':v=='||'?'+""+':v}}
+return o}
+function bare(a){const o=new Set();for(let i=0;i<a.length;i++){const t=a[i];if(t.k=='i'&&AG.has(t.v)&&a[i+1]&&a[i+1].v=='('){i++;let d=0;do{if(a[i].v=='(')d++;if(a[i].v==')')d--;i++}while(d>0&&i<a.length);i--}else if(t.k=='i'&&IDS.includes(t.v))o.add(t.v)}return o}
+function run(sql){try{return run0(sql)}catch(e){if(e instanceof SyntaxError)throw Error('Sintaks SQL tidak valid — periksa tanda kurung, koma, dan operator');throw e}}
+function run0(sql){const T=tok(sql),cl={};let cur=null,d=0;
+for(let i=0;i<T.length;i++){const t=T[i];if(t.v=='(')d++;if(t.v==')')d--;
+if(t.k=='i'&&!d){const k=['select','from','where','having'].includes(t.v)?t.v:(t.v=='group'||t.v=='order')&&T[i+1]&&T[i+1].v=='by'?(i++,t.v):null;if(k){cl[k]=cur=[];continue}}
+if(!cur)throw Error('Query harus diawali dengan SELECT');cur.push(t)}
+if(!cl.select||!cl.select.length||!cl.from)throw Error('Query membutuhkan klausa SELECT dan FROM');
+const tb=cl.from.map(t=>t.v).join('');if(tb!='employees'&&tb!='dual')throw Error('Tabel "'+tb.toUpperCase()+'" tidak tersedia di simulator (gunakan EMPLOYEES atau DUAL)');
+const src=tb=='dual'?[{_i:0,dummy:'X'}]:DATA;let sel=cl.select,dis=false;if(sel[0].v=='distinct'){dis=true;sel=sel.slice(1)}
+const split=a=>{const o=[[]];let d=0;a.forEach(t=>{if(t.v=='(')d++;if(t.v==')')d--;t.v==','&&!d?o.push([]):o[o.length-1].push(t)});return o};
+const hasAg=a=>a.some((t,i)=>t.k=='i'&&AG.has(t.v)&&a[i+1]&&a[i+1].v=='(');
+const mk=a=>new Function('r','G',`return (${tr(a)})`),items=[];
+split(sel).forEach(it=>{if(it.length==1&&it[0].v=='*'){(tb=='dual'?['dummy']:COLS).forEach(c=>items.push({h:c.toUpperCase(),a:[{k:'i',v:c,raw:c}]}));return}
+let a=it.slice(),al=null;const L=a[a.length-1],P=a[a.length-2];
+if(a.length>1&&L.k=='q'){al=L.v.slice(1,-1);a.pop();if(a.length&&a[a.length-1].v=='as')a.pop()}
+else if(a.length>2&&P.v=='as'&&L.k=='i'){al=L.raw;a.length-=2}
+else if(a.length>1&&L.k=='i'&&!IDS.includes(L.v)&&!F[L.v]&&L.v!='sysdate'&&(P.v==')'||P.k!='o')){al=L.raw;a.pop()}
+if(!a.length)throw Error('Ekspresi SELECT kosong (periksa koma)');
+items.push({h:al??a.map(t=>t.raw||t.v).join('').toUpperCase(),a})});
+const fns=[...new Set([...cl.select,...(cl.where||[]),...(cl.having||[])].filter(t=>t.k=='i'&&(F[t.v]||AG.has(t.v)||t.v=='sysdate')).map(t=>t.v.toUpperCase()))];
+let rows=src;if(cl.where){if(hasAg(cl.where))throw Error('ORA-00934: fungsi grup tidak diperbolehkan di WHERE — gunakan HAVING');const f=mk(cl.where);rows=src.filter(r=>f(r))}
+const kept=rows.map(r=>r._i),gb=cl.group?split(cl.group):null,isAg=hasAg(cl.select)||!!(cl.having&&hasAg(cl.having));let grp;
+if(gb||isAg){const gc=new Set(gb?gb.flat().filter(t=>t.k=='i'&&IDS.includes(t.v)).map(t=>t.v):[]);
+items.forEach(x=>bare(x.a).forEach(c=>{if(!gc.has(c))throw Error('ORA-00979: bukan ekspresi GROUP BY — kolom "'+c.toUpperCase()+'" harus ada di GROUP BY atau dibungkus fungsi agregat')}));
+if(gb){const kf=gb.map(mk),M=new Map();rows.forEach(r=>{const kv=kf.map(f=>fmt(f(r))),k=JSON.stringify(kv);if(!M.has(k))M.set(k,{rows:[],k:kv.join(', ')});M.get(k).rows.push(r)});grp=[...M.values()]}else grp=[{rows,k:'ALL'}]}
+else grp=rows.map(r=>({rows:[r],k:''}));
+const fs=items.map(x=>mk(x.a)),hv=cl.having&&mk(cl.having);
+let out=grp.map(g=>({g,r:g.rows[0]||{}})).filter(o=>!hv||hv(o.r,o.g.rows));out.forEach(o=>o.v=fs.map(f=>f(o.r,o.g.rows)));
+if(cl.order){const ob=split(cl.order).map(a=>{let desc=false;const L=a[a.length-1];if(L.v=='desc'||L.v=='asc'){desc=L.v=='desc';a=a.slice(0,-1)}
+if(a.length==1&&a[0].k=='n')return{i:+a[0].v-1,desc};
+const nm=a.length==1?a[0].k=='q'?a[0].v.slice(1,-1):a[0].raw:null,ix=nm==null?-1:items.findIndex(x=>x.h.toUpperCase()==nm.toUpperCase());
+return ix>=0?{i:ix,desc}:{f:mk(a),desc}});
+out.forEach(o=>o.ok=ob.map(b=>b.f?b.f(o.r,o.g.rows):o.v[b.i]));
+out.sort((x,y)=>{for(let j=0;j<ob.length;j++){const a=x.ok[j],b=y.ok[j];if(fmt(a)==fmt(b))continue;const c=a==null?1:b==null?-1:a>b?1:-1;return ob[j].desc?-c:c}return 0})}
+let R=out.map(o=>o.v);if(dis){const s=new Set();R=R.filter(v=>{const k=v.map(fmt).join('\u0001');return s.has(k)?0:(s.add(k),1)})}
+const gm={};grp.forEach((g,gi)=>g.rows.forEach(r=>gm[r._i]=gi));
+return{cols:items.map(x=>x.h),rows:R,kept,gm,ng:grp.length,gk:grp.map(g=>g.k),mode:gb?'group':isAg?'agg':'single',fns,ord:!!cl.order,w:!!cl.where}}
+function same(a,b,ord){if(a.cols.length!=b.cols.length||a.rows.length!=b.rows.length)return false;const f=r=>r.map(fmt).join('\u0001'),x=a.rows.map(f),y=b.rows.map(f);if(!ord){x.sort();y.sort()}return x.join('\n')==y.join('\n')}
+function tbl(r){return`<div class="sc"><table><tr>${r.cols.map(c=>'<th>'+esc(c)+'</th>').join('')}</tr>${r.rows.slice(0,40).map(x=>'<tr>'+x.map(v=>'<td>'+esc(fmt(v))+'</td>').join('')+'</tr>').join('')}</table></div><small style="color:var(--m)">${r.rows.length} baris dipilih${r.rows.length>40?' (40 pertama ditampilkan)':''}.</small>`}
+
+/* ===== Canvas ===== */
+function sim(cv,res,still){const c=cv.getContext('2d'),W=760,H=340;cancelAnimationFrame(cv._a);
+const R=res||{kept:[],rows:[],cols:[],mode:'single',ng:1,gm:{},gk:[],fns:[]},ord={};R.kept.forEach((i,k)=>ord[i]=k);
+const M={x:235,y:46,w:150,h:H-72},nb=Math.max(1,Math.min(R.ng,8)),bh=M.h/nb,t0=performance.now(),sg=R.mode=='single';
+const hm=i=>({x:10+(i%3)*58,y:30+Math.floor(i/3)*38}),cl=(p)=>Math.min(1,Math.max(0,p)),ez=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const tg=i=>sg?{x:M.x+M.w/2-12,y:M.y+M.h/2-14}:{x:M.x+M.w/2-12+((ord[i]%4)-1.5)*10,y:M.y+Math.min(R.gm[i]||0,nb-1)*bh+bh/2-8};
+function person(x,y,i,a,g){const e=DATA[i];c.globalAlpha=a;c.fillStyle=g?'#64748b':`hsl(${((e.department_id||0)*37)%360},70%,60%)`;c.beginPath();c.arc(x+12,y+6,5,0,7);c.fill();c.fillRect(x+6,y+12,12,9);c.fillStyle='#cbd5e1';c.font='8px sans-serif';c.fillText(e.first_name.slice(0,8),x+1,y+30);c.globalAlpha=1}
+function fr(now){const T=still?0:(now-t0)/1000;c.fillStyle='#0f172a';c.fillRect(0,0,W,H);c.font='bold 11px sans-serif';c.fillStyle='#94a3b8';c.fillText('TABEL EMPLOYEES',10,16);
+c.strokeStyle='#f97316';c.lineWidth=2;c.strokeRect(M.x,M.y,M.w,M.h);c.fillStyle='#f97316';c.fillText((R.fns.join(' · ')||'SELECT').slice(0,26),M.x,M.y-8);
+if(sg){const cx=M.x+M.w/2,cy=M.y+M.h/2,a=T>1.2&&T<3.6?T*4:0;c.lineWidth=5;c.strokeStyle='#fb923c';for(let k=0;k<8;k++){c.beginPath();c.moveTo(cx+Math.cos(a+k*Math.PI/4)*20,cy+Math.sin(a+k*Math.PI/4)*20);c.lineTo(cx+Math.cos(a+k*Math.PI/4)*30,cy+Math.sin(a+k*Math.PI/4)*30);c.stroke()}c.lineWidth=2;c.beginPath();c.arc(cx,cy,22,0,7);c.stroke();c.fillStyle='#fdba74';c.font='bold 13px sans-serif';c.fillText('f(x)',cx-12,cy+5)}
+else for(let g=0;g<nb;g++){c.lineWidth=1;c.strokeStyle='#334155';c.strokeRect(M.x+6,M.y+g*bh+3,M.w-12,bh-6);c.fillStyle='#94a3b8';c.font='9px monospace';c.fillText((g==7&&R.ng>8?'… +'+(R.ng-7)+' grup':String(R.gk[g]??'')).slice(0,24),M.x+10,M.y+g*bh+13)}
+DATA.forEach((e,i)=>{const h=hm(i),k=ord[i];if(k===undefined){const p=cl((T-.5)/.8);person(h.x,h.y+p*8,i,1-.75*p,p>0)}else{const q=ez(cl((T-1.3-k*.05)/.9)),g=tg(i);if(sg&&q>=1)return;person(h.x+(g.x-h.x)*q,h.y+(g.y-h.y)*q,i,1,0)}});
+const x0=410;c.fillStyle='#1e293b';c.fillRect(x0,28,W-x0-8,H-40);c.font='bold 11px sans-serif';c.fillStyle='#94a3b8';c.fillText(res?'HASIL ('+R.rows.length+' baris)':'HASIL',x0+8,44);
+c.font='10.5px ui-monospace,Consolas,monospace';if(!res){c.fillStyle='#64748b';c.fillText('Tekan ▶ Eksekusi untuk memulai',x0+8,70)}
+else{c.fillStyle='#fb923c';c.fillText(R.cols.join(' | ').slice(0,46),x0+8,62);const n=Math.min(R.rows.length,12,Math.max(0,Math.floor((T-(sg?2.2:2.8))*7)));c.fillStyle='#e2e8f0';for(let j=0;j<n;j++)c.fillText(R.rows[j].map(fmt).join(' | ').slice(0,46),x0+8,80+j*17);if(n>=12&&R.rows.length>12){c.fillStyle='#64748b';c.fillText('… dan '+(R.rows.length-12)+' baris lain',x0+8,80+12*17)}}
+c.font='11px sans-serif';c.fillStyle='#fbbf24';c.fillText(!res?'Menunggu query…':T<1.2?(R.w?'① WHERE menyaring baris (abu-abu = ditolak)':'① FROM membaca semua baris'):T<2.6?'② DBMS menjalankan function '+(sg?'pada tiap baris':'dan mengelompokkan baris'):'③ Hasil dikirim ke client',10,H-8);
+if(!still&&T<7)cv._a=requestAnimationFrame(fr)}
+still?fr(0):cv._a=requestAnimationFrame(fr)}
+
+/* ===== UI ===== */
+const $=s=>document.querySelector(s);
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)),SB=new TextEncoder(),hx=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',SB.encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+const sig=(r,o)=>{const a=r.rows.map(x=>x.map(fmt).join('\u0001'));if(!o)a.sort();return r.cols.length+'#'+a.join('\n')};
+let DK=null;
+async function dkey(u,p){const b=await crypto.subtle.importKey('raw',SB.encode(u+':'+p),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:SALT,iterations:600000,hash:'SHA-256'},b,{name:'AES-GCM',length:256},false,['decrypt'])}
+async function dec(k,e){const a=b64(e);return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:a.slice(0,12)},k,a.slice(12)))}
+function mount(qa,Q,cv,cb){qa.innerHTML=`<div class="card"><span class="tag">${Q[0]}</span><p>${Q[1]}</p><textarea spellcheck="false" rows="3" placeholder="Tulis query SQL di sini…"></textarea><button class="pri">▶ Eksekusi &amp; Periksa</button>${cv?'<canvas width="760" height="340"></canvas>':''}<div class="out"></div></div>`;
+const ta=qa.querySelector('textarea'),out=qa.querySelector('.out'),cvs=qa.querySelector('canvas'),ks=Q[5]||(DK&&DK[Q[4]]),k=ks&&run(ks);cvs&&sim(cvs,null,1);
+const key=()=>k?`<div class="key"><b>Kunci jawaban (mode dosen):</b><pre>${esc(ks)};</pre>${tbl(k)}${cvs?'<button class="sec simk">▶ Simulasikan jawaban benar</button>':''}</div>`:'';
+const bind=()=>{const b=out.querySelector('.simk');b&&(b.onclick=()=>{cvs.scrollIntoView({block:'center',behavior:'smooth'});sim(cvs,k)})};
+qa.querySelector('.pri').onclick=async()=>{let s;try{s=run(ta.value)}catch(e){cvs&&sim(cvs,null,1);out.innerHTML=`<div class="msg bad">❌ Error: ${esc(e.message)}</div>`+key();bind();cb(0);return}
+cvs&&sim(cvs,s);let ok;try{ok=Q[5]?same(s,k,Q[3]):await hx(sig(s,Q[3]))==Q[2]}catch(e){out.innerHTML='<div class="msg bad">❌ Pemeriksaan butuh HTTPS atau file lokal (crypto tidak tersedia).</div>';return}
+out.innerHTML=(ok?'<div class="msg ok">✅ Benar! Hasil query Anda sesuai.</div>':'<div class="msg bad">❌ Hasil belum sesuai dengan yang diminta soal. Coba periksa lagi query Anda.</div>')+'<b>Hasil query Anda</b>'+tbl(s)+(ok?'':key());bind();cb(ok?1:2)}}
+function kunciView(){const K=$('#kunci');
+if(!DK){K.innerHTML=`<div class="card" style="max-width:380px;margin:30px auto"><h2 style="margin-top:0">🔑 Login Dosen</h2><p style="color:var(--m);font-size:13px">Halaman ini berisi kunci jawaban dan hanya untuk dosen pengampu.</p><label>Username<input id="lu" autocomplete="username"></label><label>Password<input id="lp" type="password" autocomplete="current-password"></label><button class="pri" id="lb">Masuk</button><div class="out"></div></div>`;
+const o=K.querySelector('.out'),go=async()=>{if(!(window.crypto&&crypto.subtle)){o.innerHTML='<div class="msg bad">❌ Login butuh HTTPS atau file lokal.</div>';return}
+o.innerHTML='<div class="msg">Memeriksa…</div>';let ck;try{ck=await dkey($('#lu').value.trim(),$('#lp').value);const m={};for(const Q of [...U,...P])m[Q[4]]=await dec(ck,Q[4]);DK=m}catch(e){o.innerHTML='<div class="msg bad">❌ Username atau password salah.</div>';return}kunciView()};
+$('#lb').onclick=go;K.querySelectorAll('input').forEach(i=>i.onkeydown=e=>e.key=='Enter'&&go());return}
+const sec=(t,L)=>'<h2>'+t+'</h2>'+L.map((Q,i)=>{const s=DK[Q[4]];return `<details class="card"><summary><b>${i+1}. ${Q[0]}</b> — ${Q[1]}</summary><pre>${esc(s)};</pre>${tbl(run(s))}</details>`}).join('');
+K.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><b>✅ Mode dosen aktif</b><button class="sec" id="lo">Keluar</button></div>'+sec('Kunci Uji Query',U)+sec('Kunci Praktikum Canvas',P);
+$('#lo').onclick=()=>location.reload()}
+function pager(id,list,cv){const root=$(id),sc=root.firstChild,ch=document.createElement('div'),qa=document.createElement('div'),st=[];ch.className='chips';root.append(ch,qa);
+const upd=()=>sc.textContent='Benar: '+st.filter(x=>x==1).length+' / '+list.length+' soal';
+list.forEach((Q,i)=>{const b=document.createElement('button');b.className='chip';b.textContent=i+1;b.title=Q[0];b.onclick=()=>go(i);ch.append(b)});
+function go(i){[...ch.children].forEach((b,j)=>b.classList.toggle('on',j==i));mount(qa,list[i],cv,r=>{if(st[i]!=1)st[i]=r?r==1?1:2:2;const b=ch.children[i];b.classList.toggle('ok',st[i]==1);b.classList.toggle('bad',st[i]==2);upd()})}
+upd();go(0)}
+
+const SALT=Uint8Array.from(atob("wgKOrpWtWwI6erVSjkp3kg=="),c=>c.charCodeAt(0));
+const U=[["UPPER","Tampilkan nama lengkap karyawan (first_name dan last_name dipisah satu spasi) dalam HURUF KAPITAL untuk ID Card.","681ee171909a619a4e8b5158808e9634291dc85e16a325305296322a9ce6d648",false,"hPe4Hc0D8YQvxF+POOvF5qRneP1+09QhAPlen6ND+6uswKjA8Jh4na8XCrtfQnZPa9vLhPlkIr6zcgAqb5bOYk97rSjUR0qUpVEImjy5JnTpKi0x+lm8YRCVGzOerL8H29hggDibwKGepaWc",null],["LOWER","Buat email perusahaan: first_name dan last_name huruf kecil dipisah titik, diakhiri @technova.com.","4b8eea706e9423678e27b3f3bf71abece17f2a014828be1aefa55c774cf5829e",false,"W16XCcBYtw6lvM8bD59pLjw215TkEGMOiNpvMpfemjS+u1EF7TyfuT6U9HUWdUVOkB/iJ7IVTb8kX4A9eXOBosX6RVxBiWOzGLMHFL2VZeqtlOSBID+625SmdJvKCDOy1WQ2EskwHTG8fKQAgWcJX79QqOKJPcV+0g5PjKk=",null],["LPAD","Tampilkan last_name dan salary yang dipadding karakter * di sisi kiri hingga total 10 karakter.","fcdd81a9176c9ce3ebae952417e97f5789a30393ff41e48728799052ab8575f4",false,"ER0MKcvjG6Zuw758tV283U8ZU4IdHq+xPgRZlDI3zsUv9ySbdF/FNK7ma7nCP2je1Xxvx4Tg2Hfqryk+r6ejfp7W6WIiKew0xoAwcWerpsc=",null],["RPAD","Tampilkan last_name dan salary yang dipadding karakter * di sisi kanan hingga total 10 karakter.","71b1facb608a38f10c978789c70a8a3d4a59bfaa3260d6b557e6cbe449597b72",false,"xpT1PEAFaVHq2IJRz2+1JeqU2uIfSFxF5JMEBI1VFDvGZqWonZkECfKRgrrVrBJRwmpFRNOwLwwsT841NEvmLyspx38AlAbxFvRwsEZoC3Y=",null],["REPLACE","Tampilkan job_id lama dan job_id baru dengan kata CLERK diganti menjadi STAFF.","709f2d4fcb9e2495fe8eb8dc11e4f282be3a191b4d248fa83db014b994799fd0",false,"TmxGWdB6kyzA7DcHjWdFB2iKZR91FEcWq4frhMxN6GDebRMMPD1H5NcU2i2k3jrFWHHZrZ9GCoeZLBkqikjYCWi7TqHKDQcQroMJbop3UDV8kIRV3EQLt1g=",null],["ROUND &amp; TRUNC","Tampilkan last_name, gaji perhari (salary/30) dibulatkan 2 desimal, dan gaji perhari dipotong 2 desimal.","22b4bf0a0eea2f28e701ac2ae92ccebc1bf5e5615732324827fcce0f93c38379",false,"KLLNsW4IQyFlyJann/tsem1WVM7ZpfXtNUjLu35Dhp52dIQd/RcsUoZWXFmkyAxNoecadEgotw04LcIOJ0sHJBc1X5rni3+ZaZLTeZNH6IOY2uv2TqVGz75jbX/A8tB0iIx/",null],["MOD","Tampilkan last_name, salary, dan sisa bagi salary dengan 3.","9e69a175e8f6f06f396df72d75b659b85c8b8f5d88f7e41f1ff8e6e4c2e43487",false,"FCJ7SP2iGVntcQcSOLeA8WAOe1TA1gtic+R3Ev2fhSOjf1q7iywSTMUYWtmEA3whzsBsyhEAChd4Ayc9u/3adGBYiwaUbz7RmMqyxMJoU/Pwbg==",null],["DATE + NUMBER","Tampilkan first_name, hire_date, dan tanggal kontrak berakhir (90 hari setelah hire_date).","32333e4b133cb9b69f72fdfd6eeceb4607844758d0aba8e6654cb90c22659452",false,"3PaVKo9J/GlkFOxBbnyVHPhBGTi9wI3jGyJJfPdfH4caQyyCPPJEifvZJCRwpqEl1nqV8ggyj2odUjpJu+AZWf0ssGHBP8MeZIpo4tw+b8T1yOfAUDAo",null],["ADD_MONTHS","Tampilkan hire_date dan tanggal pemecatan, yaitu 10 tahun (120 bulan) setelah hire_date.","6ce2268dc3d9e098602db4dfc220608d1a9f19af34964921393f5f4fa4631dc4",false,"evyfcobWK3QkhLB++pXtobnMxdawJTY3JdYKdF47F0x5G8gek0uIbesREU0i8dAgM4Esk+/Z8GiJu9LILai1EiQZUN6eaaG5Akgnby6PRIcqTKvrNsM=",null],["MONTHS_BETWEEN","Tampilkan first_name dan lama kerja dalam bulan (dibulatkan tanpa desimal) dihitung dari hire_date sampai SYSDATE.",null,false,"mNkD6BIO67d1RvvLu5JRxWQf5iubqf7az6Vo//xmgtDFQgxtCJt+lBiK636ZulacbDuzPq3XrmIb1D4SfOTTr1tHlLigo7L5CoIaG/RzGpHlFPTVKrfQmfVg9Vdnd0hi89n4TNUD6rw=","select first_name, round(months_between(sysdate,hire_date),0) from employees"],["COUNT","Ada berapa orang karyawan yang masuk kerja setelah 14 Jan 99?","ac7126690d8fdf8a31cceaaf130a5423743fb8794dcede629029fc32e18dae39",false,"PyzxA1APZN3+NkUkP7bWZLrwbmJEXyaNP8r5i64Spnno6sbeVHAq/I0g/kNPh0ldEYRElXKbXDMsNKWuwt6lKkS7vt+Tq+wUL7udrK/EGz6cmZ9nMq0FaQ==",null],["AVG","Tampilkan rata-rata seluruh salary karyawan.","7e26c7ce01ec724ab7c671c9a3c737f8b20bb1a53d86d4354bd5b37248bf326a",false,"Wgm7EkhT/mXPZqAwD9w5WheJb0gZbenDEgaDQegDuXcZwF5euRauCOVSdiGJfe0ugPxvFFMW2/f91KaLmw==",null],["SUM, MAX, MIN","Tampilkan gaji terendah, gaji tertinggi, dan jumlah gaji karyawan di department_id 20 (urutan kolom: MIN, MAX, SUM).","e9a457cdee8b24e5607415fea7495cbf747f1de93a1fc5308b17eab111989e30",false,"OtIC+5Gx+cOGFkJ2hrQMV35+QH6GAKvRqrRRzme6F7LYcBhww/Vsrh9dHgviOh/EOZYLtlLZNA08kI4q4n2MGWF46VZnQvTw7UC+QDVGRSwZkCmor8E9PjXwG/9x+hN6VMC4MwADBnHX2zrLMASMdA==",null],["GROUP BY","Tampilkan department_id dan rata-rata gaji pada setiap department_id.","3dfb82fcae93dada4340b973602748aa686f5b1205e7101828c0c433eb298d9a",false,"OqATqCt7w/syEwcnHULn2wEUE1uOfbfB7cMjslnsUQ3Nnwo6lbzpnp/fIRQ5hu53Adti2P3nHKgRgTiNGOiY1rEf2urnG/OO+SRlycXf0L+i2kfmQgu1MinAGA74MWaMBm8q",null],["HAVING + ORDER BY","Tampilkan department_id dan gaji tertinggi tiap departemen, hanya yang gaji tertingginya lebih dari 6000, urut dari terbesar ke terkecil.","883636722eebaa96ed3b1fe035b9c21b1a1befcbb286e23fc5bcff75e03ab4ae",true,"6qAf8bGlb1bMo9JuUIDv6f7MvK8gZU7bxaqdMW1jCX3OuW/bmCmat+aC/OzXKd+IJA6J0K77VEbrQTLiM/5jqSp7tT1PXbeUNCEhpY2kwp/may7xmgV8GJDCCyYKAYUbyVbQUN0yPwVBtSxqxnGKucVUy9fVP6tMOBYWeC+gCrI2mHvrdWI3uquFqFMJE6w2//66Esh3eQ==",null],["MIN &amp; MAX tanggal","Tampilkan tanggal masuk paling awal dan paling akhir dari seluruh karyawan.","d04ed4bb22f748c241a48453252836c33acee03ccdf884bf1444cf38cdba77cf",false,"P3qO5VGveAiNmleN0fxtSysgqYaP9gmqXo0ODkYGfTbkpLFSY917myqdxGMS047h88/TQtViDR7QSjMEkNM4B6SjfzU+WvBOdf/A6r/ZgzQ=",null],["COUNT(kolom)","Tampilkan jumlah karyawan yang memiliki komisi (commission_pct tidak NULL).","ac7126690d8fdf8a31cceaaf130a5423743fb8794dcede629029fc32e18dae39",false,"MXTeWLYlPIvBf+Iw4DjpTNaW/KJA+e2XEW6zVOapEvJmNtG/8sx24roXIjpfgf8zinPaNWdI3XBiUYmDldtvy2gFGERWAi0=",null],["SUM + WHERE","Tampilkan total gaji seluruh karyawan di department_id 50.","5d41ee8e549bd4ad14215b658259500cb63c283b6c5504d6a60f0eabfc57dcb9",false,"pGawuIsZ6rKOnAuweOPdMQolUoL6h71bmpGpEI/QtMIbk0/fB9IEHrMUbOOs+RT80LNylh4wYmMt8V5AHRQwflQN6ZBrSuX+PZPqd0j8+ycv7DkLTkc=",null],["LIKE","Tampilkan first_name dan job_id karyawan yang job_id-nya diawali IT.","5941010192f52e2f89d12d5dd2fce98841d7889d09ad6dd5e464a1435438e634",false,"5+07vki95CZnFBxxmKTEwBHw4WG2hv99GsaqbuVh2iubOYltAZA5YRQkc3x3ZswYMhiJOL8k9PER5faFCAvkWn/xtwCtXuDVt5d6QV2bl6+o5zZrWcSq8ZdWBoY=",null],["GROUP BY + COUNT","Tampilkan job_id dan jumlah karyawan pada tiap job_id, urut dari jumlah terbanyak.","c4eda655c46863cc9fa89eb01f407506bfabb7e4a56ea8f04aaf4f1de616ce2d",true,"/I7TOzXVzG3mzwbkCgGqu+UF8zQhXYecGFq9zsC/AdctP9PB/rVPxabIQXxlTotWw5yI/wATf+v8U5u8lcHKysr1nHVs7BGVREgCWLBt9X65R7QflCa17z+byzuBvsatTqwrSvixkb4I",null]];
+const P=[["1 · UPPER","ID Card TechNova: tampilkan nama lengkap (first_name spasi last_name) dalam huruf kapital, hanya untuk karyawan departemen 60.","2ade2c06ffb6e389fa0bf9aebb8c58d08f3befdd8f75b4bfa2cd041356799312",false,"4JeLm1pBW6yPsVSwA8Vta1LjU8zXbKp5QsQqBvkiiMb5mhaNg+W1au+AuKAj4LScaBtgJEG7vHrgWnKU2b0jiD/CyU04T5gMml6vW/xy/W2FYnke0m64OSaKD0o2n4wRLG0SBrULIcG3fMgHAY9pkw==",null],["2 · LOWER","Tim IT membuat email untuk karyawan ber-job_id ST_CLERK: huruf kecil first_name.last_name@technova.com.","91f2be220b06235203cdbda6ec428da23752a5ac244cf9d6890755c81939c1b5",false,"ttl/c4kvrsLp9tBjgzYdwJOErXJQPlFbxZYZLtnzVtye/tb3jUJwQEuf1kYC+chP5VU0xdGwqARiDYahVEfWG0Pyd39jcH+7KnRmsY2aNs5ImlTyhPFK25oamJEyh349HAiHB9hbKJ6/QJYkLm2i9bxprQvIfWI6UptMtOBOtCplWMEv",null],["3 · LPAD","HR menginginkan laporan karyawan bergaji di bawah 4000: last_name, gaji dolar (LPAD 6 karakter berisi '$ ') dan gaji rupiah (salary*15000, LPAD 11 karakter berisi 'Rp.').","7b93819ca8ad5b77497d8921430dd307a3298195c949e4cb6c68bafcd3e40487",false,"BYU3gfrDfCRDUTBthfbc0IvIpQsvMWsGUAAiXEDjiRZgEjfjFpToeKsDAITV6EEV19/I0WKBPqvH+RDEWxwuoSJX82hPgM2DjyKVZPuMtN498oMGwDM8CLo2wydVxX1xoCbpFJsAzbKPcz7GvJKkes+pHZVT3l78qvd5efeJ172X",null],["4 · RPAD","Tampilkan last_name yang di-RPAD hingga 12 karakter dengan titik (.) beserta salary, untuk karyawan departemen 50.","1b68e2f1cd3fa48955b59c4f468b40b3f1e202e99ec1f11414f7956db5812c88",false,"wYRS/0CjT1VqT11G3RjdASS2QV5fz5d56pTU5IWBFPS9Fj1nzALFXOnnq7lkKc1QMyyMgtXdCb+hJe9wPgdncnVbVvBKUriDUh1oP8Q70/JrySv2ffbJ9gWql2ZegyKRHsRzKN3SA3Qq",null],["5 · REPLACE","Tampilkan last_name dan job_id, ubah job_id IT_PROG menjadi IT_PROGRAMMER (tanpa mengubah tabel).","64aca52bf4fcc20211a3d9012ba3a7561e426cfbe4e0497c48d7d63c6d870a5c",false,"nXPoAXlPVi/FQYVik09stTG8rGgQeyLj8G/q84MNIT4bwfmTae+mExTJY+ZHr2BZb47jld6EPgsi8aAMG4o9Ew9nbqyXsiXkEqMPXXrRif48WSiZy31Ki14ZMFtNHhMVIUInMSqq",null],["6 · ROUND","Tampilkan last_name dan gaji perhari (salary/30) dibulatkan 2 desimal untuk karyawan bergaji di bawah 5000.","853415d201a9c31e5227f6ade78135343aadf73ed2d127bba2d1a4226a494b79",false,"4HFSKb2wZOIV1lDTgyo67bFKnEhLvIifILmyRCjaXdm02hSGhx71ggUt8KTgdXhloKh07qmaH2YRCSrNwGlc1Bit4F3jeCtIUSKPcaCflrtK6d+bXpDksoOt1QaxEg1bWRgF",null],["7 · TRUNC","Tampilkan last_name dan gaji perhari (salary/30) dipotong 2 desimal tanpa pembulatan untuk karyawan departemen 60.","814d2acb7418704cf4184fc685f65757d3e4ddd9fb6a90e523b679cdbc11537b",false,"XjkJeVf0kCdFtpI2PzeVgZk7XlSSBGGl7dzsHTcwk3fDPoTojrXxsJUjnaZ4uuhBESm6F+L+AyzeE0bTOMXjZB5qK1AnYC+bztMCU9WFgcGeJ9sZFMXBnFbeMFWHELxhMVEmr9uD6HU=",null],["8 · MOD","Tampilkan last_name dan salary karyawan yang gajinya habis dibagi 3 (sisa bagi = 0).","2da0bec619513b53cae482ec1f11e529a421a3b276e97b9a210654bb83471719",false,"2U2j1QQbdCElcMpHz9o/Nw5CA6GCWado9nGseyKX8hC34SixA1Ph+Zb7cdpvU5MVrsu62Dce/X6CjfigKp9fPDb0nYhArVzqMEzPBLJn/gEH4yOnyI6z1QE90Q==",null],["9 · SYSDATE","Tampilkan nama lengkap (first_name spasi last_name) dan tanggal laporan (SYSDATE) untuk karyawan departemen 60.",null,false,"SWTFFBQGU0fyD/p9uOSCPYkDdD8GoyOTkPK8sr7LtYL/gtigN8tDm8h0vLcda4b2NRTRjy4cNy2mL3nqkZ8lMXwN9kCMyqOaLzNRBAk4Atjhj8Uju4Z+0YrbUJybQsRKs6Mpy01bVKW3VcrONcQIwYvr","select first_name || ' ' || last_name, sysdate from employees where department_id = 60"],["10 · ADD_MONTHS","Evaluasi kinerja tiap 6 bulan: tampilkan first_name, hire_date, dan tanggal evaluasi berikutnya untuk karyawan departemen 50.","64c0959e4906cbb0a15a9e1eeea6768e6f14c3de31b505966ce79c79c4a7eea1",false,"KntX+qjmKYLSgHg7VZIZaE5++ajm3NxHbXK7au+YWamp5KfHUUWD7PYGTBS68JyUcNHaIF43nf8WloTjsapq7gtf10FQkcovntYuFRAZ51RSkcGG9MtWasTam0uaN//dX3FgakoBGYTQHTDPchtq+owlJW8xNcgceA==",null],["11 · MONTHS_BETWEEN","Tampilkan first_name dan masa kerja dalam bulan (dibulatkan 0 desimal) karyawan ber-job_id SA_REP.",null,false,"AeSPjJEQyskP9npzSuHpmzRpH4EGr9dvJ6bLC2fipLkP3B7KEDIq8P31aNV6e8ywCoKTSTgDY2QDtEbKHbzxq3ZlNnXmvqNhAqSXXv26ewQ4NVU1gU7IyaVYRawk8U/k5aE16H2hofBYA6/5JVOTPx2l8zA7bqh+DupNqjb8ddA=","select first_name, round(months_between(sysdate,hire_date),0) from employees where job_id = 'SA_REP'"],["12 · COUNT","Hitung jumlah total karyawan yang memiliki salary lebih besar dari 5000.","4a04b391f0566d19c31b04163dab736e7a44bd4e82ec89d730e73ae13dad721f",false,"geK7GgFMrMWv9uu4ewFvyX/RHuB20hAy8loPHIDUSUsm3vfa7WLyatVu/GAYm7ClQHr3zRbp/N0hFJZB6v8zYKSrEm9OdGFFzUPlWFJX",null],["13 · AVG &amp; MAX","Tampilkan rata-rata gaji dan gaji tertinggi karyawan ber-job_id IT_PROG.","44f6f9facba1ec2420848581eb115d07c34c48f1a63589f8aeb9b2562ddf97cc",false,"gs+Kg//LVnRf/oAup8hzv6eNTkk15D7KWHUm11bAJwdnHLaS5t9AHo7wZ+wFJfDY6uMzK7ynYwB4yS+BDUYsbxumtJdGmIkRg4Xh77dM8lIHSFfltm4YYzFcK1aYvuqwE7bU",null],["14 · GROUP BY","Tampilkan jumlah karyawan dari setiap department_id.","0dc9f1166fabbb35b264e3f8b7e7097bb731d31a71af723c05b643eeb5485ce8",false,"c3hioYmcP0ZJZfqTAdKkfiQQqYwzs8G094nXdskAnoaD3h/sd4BOJqfN9v+Fd6S721X9lykUyxhBtgNMwGXYRNkhSo9opuQWladxiyd1PW3lpTXbBqbcoES9QQq2/HUA",null],["15 · HAVING","Tampilkan department_id dan gaji tertinggi per departemen yang gaji tertingginya lebih dari 6000, urutkan menurun berdasarkan gaji tertinggi.","883636722eebaa96ed3b1fe035b9c21b1a1befcbb286e23fc5bcff75e03ab4ae",true,"xtPfYV6YGKtWhIfjfA17ZB9CjKEzXH+MDiTN1Pl/e799oBAgoOzbvgyNhmZFGo/ocOC8ceJqCMtSpmnv4u2eqVL5QhUL+iHCKeAzpNjs2o+hHBthhjJHzGMOYauBUY0rTdGq+/rRbOgdMFuxFcmn2hvpRKIvPbqTrD+92/GWJmNirlpwfBE2LXoLQPsMraBF2licoTJo1g==",null],["16 · MIN &amp; SUM","Tampilkan gaji terendah dan total gaji karyawan departemen 50.","14e170fe05a03da8a71aea817432340fd56d3173ea310b76121b7073b9004df5",false,"FWOXJj5+JUG6FoQK7d/rXFRx2/PIhJbK3Ks6jwlubYwcxMsDM6yfZZfItyRW6K1DPqY6y6vSQuLz3fvgBNF4aGY7vy/2dac4TdaDo14PRPiNmq/JNalJShWWlbkjzozIPLsl",null],["17 · AVG per job","Tampilkan job_id dan rata-rata gaji tiap job_id, urutkan menurun berdasarkan rata-rata gaji.","11d720ba246f27ae85345af3159f63d5f60e5494c94329711586883d5c48d236",true,"N76X4GaefH9cj7DN/C6941rE39a107ufwQCMKa2gjs+aA32zzb9IxBK/EQKiNiFVE7FlI7/f0iLDndc/+k3i0E+xepQg1aKdQlfMUkTSOUaWSr6GtRqEe/q11aaN6hf7hA7csvpynCCNEkjIkERx",null],["18 · LOWER + LIKE","Tampilkan last_name dalam huruf kecil untuk karyawan yang last_name-nya diawali huruf K.","50911d6e5cc58cdc7318403cd00a31b50a7cf06277e01e995e0588a53cb904d2",false,"5vA/Y106xZLZqHy0yklpxJeFeHmMsm9/nfuKl6Vba3XC5aM8znzx8GMGb+1Rb+W/MtyJq7sAMvxK7hXM4QSZtCh31M7mF6ReRFxiycxQNriSkeWO9Myop5mlfhs=",null],["19 · ADD_MONTHS","Masa percobaan 3 bulan: tampilkan first_name, hire_date, dan akhir masa percobaan untuk karyawan departemen 60.","45b90102d03766a15d58aefa98ba5b70435e42a849c7bb041bb3eb7c363e6b0f",false,"etkP1+bpoShMozf71EYDe4mM5cdrKjKRyt78HJhDIEDeKaHk2YDHdkodRV+1/MUBALIQ0DaYYELbF8KsesHGX155zb9I5Lx0LAR712RhQzEd9mtjM6cnaJHPHI8OAHf65M1qavtRr+kP1XjdskoapgKx0onOI/rnHw==",null],["20 · HAVING COUNT","Tampilkan department_id dan jumlah karyawan, hanya untuk departemen dengan lebih dari 2 karyawan.","5b29c038f977434b7dd6e8d071ce23fc044adc2035545494a96c8c4d262bd107",false,"eIVq4IC9y5H+Db90aPwKolg4nQzC8g9wnhyfs/jhHW9IiO2t7esJyQbRR/IiRuu6jQJkaKvbQGSNcpL0xqYXfcqcs+AjTxQHRb5MBp4HkjChrllrKUw5ul9sI2cQlTjSJQwfqutTO9AF4gIZ9KFxgZDWTc4=",null]];
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x==b));['teori','uji','prak','kunci'].forEach(t=>$('#'+t).classList.toggle('hide',t!=b.dataset.t));scrollTo(0,0)});
+kunciView();pager('#uji',U,0);pager('#prak',P,1);
+const pt=$('#pg textarea'),po=$('#pg .out');
+$('#pg button').onclick=()=>{try{po.innerHTML=tbl(run(pt.value))}catch(e){po.innerHTML=`<div class="msg bad">❌ ${esc(e.message)}</div>`}};
+document.querySelectorAll('#teori pre').forEach(p=>p.onclick=()=>{pt.value=p.textContent;$('#pg').scrollIntoView({behavior:'smooth'});$('#pg button').click()});
+</script>
+</body>
+</html>
